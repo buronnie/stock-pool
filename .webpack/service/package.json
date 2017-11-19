@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "babel-runtime": "",
-    "uuid": "^2.0.3",
-    "aws-sdk": "^2.149.0"
-  }
-}
