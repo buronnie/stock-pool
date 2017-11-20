@@ -17,7 +17,7 @@ export function create(event, context, callback) {
   const data = JSON.parse(event.body);
   const sns = new AWS.SNS();
 
-  if (typeof data.name !== 'string') {
+  if (typeof data.name !== 'string' || typeof data.symbol !== 'string') {
     handleError(callback);
     return;
   }
@@ -27,6 +27,7 @@ export function create(event, context, callback) {
     Item: {
       id: uuid.v1(),
       name: data.name,
+      symbol: data.symbol,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
@@ -40,7 +41,8 @@ export function create(event, context, callback) {
 
     const snsParams = {
       Message: JSON.stringify({
-        symbol: data.name,
+        name: data.name,
+        symbol: data.symbol,
       }),
       TopicArn: `arn:aws:sns:us-east-1:${process.env.ACCOUNT_ID}:dispatcher`
     };

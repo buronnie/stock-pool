@@ -15,7 +15,7 @@ export function update(event, context, callback) {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
-  if (typeof data.name !== 'string') {
+  if (typeof data.name !== 'string' || typeof data.symbol !== 'string') {
     handleError(callback);
     return;
   }
@@ -27,12 +27,14 @@ export function update(event, context, callback) {
     },
     ExpressionAttributeNames: {
       '#stock_name': 'name',
+      '#stock_symbol': 'symbol',
     },
     ExpressionAttributeValues: {
       ':name': data.name,
+      ':symbol': data.symbol,
       ':updatedAt': timestamp,
     },
-    UpdateExpression: 'SET #stock_name = :name, updatedAt = :updatedAt',
+    UpdateExpression: 'SET #stock_name = :name, #stock_symbol = :symbol, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
