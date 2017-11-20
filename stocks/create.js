@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import AWS from 'aws-sdk';
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -25,9 +24,8 @@ export function create(event, context, callback) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
-      id: uuid.v1(),
-      name: data.name,
       symbol: data.symbol,
+      name: data.name,
       createdAt: timestamp,
       updatedAt: timestamp,
     },

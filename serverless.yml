@@ -51,7 +51,7 @@ functions:
     handler: stocks/get.get
     events:
       - http:
-          path: stocks/{id}
+          path: stocks/{symbol}
           method: get
           cors: true
 
@@ -59,7 +59,7 @@ functions:
     handler: stocks/update.update
     events:
       - http:
-          path: stocks/{id}
+          path: stocks/{symbol}
           method: put
           cors: true
 
@@ -67,7 +67,7 @@ functions:
     handler: stocks/remove.remove
     events:
       - http:
-          path: stocks/{id}
+          path: stocks/{symbol}
           method: delete
           cors: true
 
@@ -79,11 +79,11 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: id
+            AttributeName: symbol
             AttributeType: S
         KeySchema:
           -
-            AttributeName: id
+            AttributeName: symbol
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

@@ -1,0 +1,10 @@
+{
+  "name": "stock-pool",
+  "version": "1.0.0",
+  "description": "Packaged externals for stock-pool",
+  "private": true,
+  "dependencies": {
+    "babel-runtime": "",
+    "aws-sdk": "^2.149.0"
+  }
+}

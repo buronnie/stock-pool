@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "babel-runtime": "",
+    "aws-sdk": "^2.149.0"
+  }
+}

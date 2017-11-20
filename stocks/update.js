@@ -15,7 +15,7 @@ export function update(event, context, callback) {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
-  if (typeof data.name !== 'string' || typeof data.symbol !== 'string') {
+  if (typeof data.name !== 'string') {
     handleError(callback);
     return;
   }
@@ -23,18 +23,16 @@ export function update(event, context, callback) {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      id: event.pathParameters.id,
+      symbol: event.pathParameters.symbol,
     },
     ExpressionAttributeNames: {
       '#stock_name': 'name',
-      '#stock_symbol': 'symbol',
     },
     ExpressionAttributeValues: {
       ':name': data.name,
-      ':symbol': data.symbol,
       ':updatedAt': timestamp,
     },
-    UpdateExpression: 'SET #stock_name = :name, #stock_symbol = :symbol, updatedAt = :updatedAt',
+    UpdateExpression: 'SET #stock_name = :name, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
