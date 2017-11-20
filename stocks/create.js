@@ -15,6 +15,7 @@ function handleError(callback) {
 export function create(event, context, callback) {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
+  const sns = new AWS.SNS();
 
   if (typeof data.name !== 'string') {
     handleError(callback);
@@ -37,14 +38,23 @@ export function create(event, context, callback) {
       return;
     }
 
-    const response = {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
-        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
-      },
-      body: JSON.stringify(params.Item),
+    const snsParams = {
+      Message: JSON.stringify({
+        symbol: data.name,
+      }),
+      TopicArn: `arn:aws:sns:us-east-1:${process.env.ACCOUNT_ID}:dispatcher`
     };
-    callback(null, response);
+
+    sns.publish(snsParams, (error, data) => {
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+        },
+        body: 'Message published to SNS topic dispatcher',
+      };
+      callback(null, response);
+    });
   });
 }
